@@ -140,24 +140,35 @@ public:
 
         if (sz(a) == 0 || sz(b) == 0 || a == "0" || b == "0")
             return "0";
-
+        bool negative = false;
+        if (a[0] == '-' ^ b[0] == '-')
+        {
+            negative = true;
+        }
         vector<int> result(sz(a) + sz(b) + 1, 0);
         reverse(all(a));
         reverse(all(b));
         for (int i = 0; i < sz(a); i++)
         {
+            if (a[i] == '-')
+                continue;
             int x = a[i] - '0';
             for (int j = 0; j < sz(b); j++)
             {
+                if (b[j] == '-')
+                    continue;
                 int y = b[j] - '0';
                 int mul = (x * y) + result[i + j];
                 result[i + j] = (mul % 10);
                 result[i + j + 1] = (result[i + j + 1] + (mul / 10));
             }
         }
-        reverse(all(result));
         string ans = "";
+        reverse(all(result));
+        if (negative)
+            ans += '-';
         bool ok = false;
+
         for (int i = 0; i < sz(result); i++)
         {
             if ((result[i] >= 1 && result[i] <= 9) && ok == false)
@@ -169,6 +180,7 @@ public:
                 char num = result[i] + '0';
                 ans += num;
             }
+            
         }
         return ans;
     }
